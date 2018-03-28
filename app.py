@@ -10,12 +10,13 @@ app = Flask(__name__)
 #Confic MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'lookinlikeasnacc'
-app.config['MYSQL_DB'] = 'snaccme'
+app.config['MYSQL_PASSWORD'] = 'Pastumbers'
+app.config['MYSQL_DB'] = 'BBOnline'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 #init MYSQL
 mysql=MySQL(app)
 
+#OLD MYQL PASSWORD: lookinlikeasnacc
 
 # Articles = Articles()
 
@@ -30,37 +31,37 @@ def about():
     return render_template('about.html')
 
 #Articles
-@app.route('/articles')
-def articles():
+@app.route('/users')
+def users():
     # Create cursor
     cur = mysql.connection.cursor()
 
     # Get articles
-    result = cur.execute("SELECT * FROM articles")
+    result = cur.execute("SELECT * FROM users")
 
-    articles = cur.fetchall()
+    users = cur.fetchall()
 
     if result > 0:
-        return render_template('articles.html', articles=articles)
+        return render_template('users.html', users=users)
     else:
         msg = 'No Articles Found'
-        return render_template('articles.html', msg=msg)
+        return render_template('users.html', msg=msg)
 
     # Close connection
     cur.close()
 
-#Single Article
-@app.route('/article/<string:id>')
-def article(id):
+#Single User
+@app.route('/user/<string:id>')
+def user(id):
     # Create cursor
     cur = mysql.connection.cursor()
 
     # Get article
-    result = cur.execute("SELECT * FROM articles WHERE id=%s", (id))
+    result = cur.execute("SELECT * FROM users WHERE id=%s", (id))
 
-    article = cur.fetchone()
+    user = cur.fetchone()
 
-    return render_template('article.html', article=article)
+    return render_template('user.html', user=user)
 
 #Register Form Class
 class RegisterForm(Form):
