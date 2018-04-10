@@ -2,17 +2,14 @@
 
 {% block body %}
     <h1>Users</h1>
-    {% for user in users %}
         <ul class="list-group" style="background-color: #8b95c9">
-            <li class="list-group-item"><a href="user/{{user.id}}">{{ user.name }}</a></li>
+            {% for user in users %}
+            <li class="list-group-item">
+                    <a href="user/{{user.id}}">{{ user.name }}</a>
+                    <span class="pull-right">
+                    <button class="btn btn-xs btn-secondary" >+</button>
+                    </span>
+            </li>
             {% endfor %}
         </ul>
 {% endblock %}
-
-"""
-
-username
-plus
-how long since last buck
-
-"""
