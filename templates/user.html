@@ -1,10 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>{{user.name}}</h1>
+    <h1>{{user.name}} | Bucks: {{user.bucks|string}}</h1>
 <small>Signed up on {{ user.register_date }}</small>
 <hr>
-<div>
-    <p></p>
-</div>
 {% endblock %}

@@ -6,8 +6,9 @@
             {% for user in users %}
             <li class="list-group-item">
                     <a href="user/{{user.id}}">{{ user.name }}</a>
+                    <small>Bucks: {{user.bucks|string}}</small>
                     <span class="pull-right">
-                    <button class="btn btn-xs btn-secondary" >+</button>
+                        <button class="btn btn-xs btn-secondary"><a href="/add_buck/{{user.id}}">+</a></button>
                     </span>
             </li>
             {% endfor %}
