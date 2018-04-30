@@ -5,6 +5,7 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
 
+
 app = Flask(__name__)
 
 #Config MySQL
@@ -184,31 +185,27 @@ def dashboard():
 def add_buck(id):
     # Create cursor
     cur = mysql.connection.cursor()
-
-    # Get article
-    cur.execute("UPDATE users SET bucks = bucks + 1 WHERE id = %s", (id))
+    result = cur.execute("SELECT * FROM users WHERE id=%s", (id))
+    user = cur.fetchone()
+    result = cur.execute("SELECT * FROM users WHERE username=%s", [session['username']])
+    givingUser = cur.fetchone()
+    if user.get('username') != session['username'] and int(givingUser['bucksToGive']) > 0:
+        # give/take bucks
+        cur.execute("UPDATE users SET bucks = bucks + 1 WHERE id = %s", (id))
+        cur.execute("UPDATE users SET bucksToGive = bucksToGive - 1 WHERE username = %s", [session['username']])
+    else:
+        if user.get('username') == session['username']:
+            flash('You cant give yourself bucks you cheater', 'success')
+        if int(givingUser['bucksToGive']) <= 0:
+            flash(r"You don't have any more bucks to give", 'success')
 
     # Commit to DB
     mysql.connection.commit()
 
-    # Get users
-    result = cur.execute("SELECT * FROM users")
-
-    users = cur.fetchall()
-
-    if result > 0:
-        return render_template('users.html', users=users)
-    else:
-        msg = 'No Users Found'
-        return render_template('users.html', msg=msg)
-
     # Close Conection
     cur.close()
 
-    msg = "You gave a buck!"
-
-    return render_template('users.html', msg=msg)
-
+    return redirect(url_for('users'))
 
 if __name__ == '__main__':
     app.secret_key='secret123'

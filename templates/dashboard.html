@@ -4,9 +4,18 @@
     <h1>Dashboard <small>Welcome {{session.username}}</small></h1>
     <hr />
 
-    <table class="table table-striped">
-        <tr>
-            <th>Number of Bulldog Bucks: {{user.bucks|string}}</th>
-        </tr>
-    </table>
+<table class="table" style="background-color: white; border-radius: 6px">
+  <thead class="thead">
+    <tr>
+      <th scope="col">Your Bucks</th>
+      <th scope="col">Bucks Left to Give</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td scope="row">{{user.bucks|string}}</td>
+      <td>{{user.bucksToGive|string}}</td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}

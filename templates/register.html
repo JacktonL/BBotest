@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+
     <h1>Register</h1>
     {% from "includes/_formhelpers.html" import render_field %}
     <form method="POST" action="">
@@ -19,6 +20,6 @@
         <div class="form-group">
             {{render_field(form.confirm, class_="form-control")}}
         </div>
-        <p><input type="submit" class="btn btn-primary" value="Submit"></p>
+        <p><input type="submit" style="background-color: #8b95c9; border-style: none; color: black;" class="btn btn-primary" value="Submit"></p>
     </form>
 {% endblock %}
