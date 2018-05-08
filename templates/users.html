@@ -1,16 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>Users</h1>
-        <ul class="list-group" style="background-color: #8b95c9">
-            {% for user in users %}
-            <li class="list-group-item">
-                    <a href="user/{{user.id}}" style="color:purple">{{ user.name }}</a>
-                    <small>Bucks: {{user.bucks|string}}</small>
-                    <span class="pull-right">
-                        <button class="btn btn-xs btn-secondary"><a href="/add_buck/{{user.id}}" style="color:green">+</a></button>
-                    </span>
-            </li>
-            {% endfor %}
-        </ul>
+    <h1>Users <small>You have {{loggedInUser.bucksToGive|string}} Bucks left to give</small></h1>
+    <hr />
+
+    <ul class="list-group" style="background-color: #8b95c9">
+        {% for user in users %}
+        <li class="list-group-item">
+                <a href="user/{{user.id}}" style="color:purple">{{ user.name }}</a>
+                <small>Bucks: {{user.bucks|string}}</small>
+                <span class="pull-right">
+                    <button class="btn btn-xs btn-secondary"><a href="/add_buck/{{user.id}}" style="color:green">+</a></button>
+                </span>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

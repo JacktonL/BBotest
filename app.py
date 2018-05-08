@@ -19,7 +19,16 @@ mysql=MySQL(app)
 
 #OLD MYQL PASSWORD: lookinlikeasnacc
 
-# Articles = Articles()
+#check if user logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, please login', 'danger')
+            return redirect(url_for('login'))
+    return wrap
 
 #Index
 @app.route('/')
@@ -33,6 +42,7 @@ def about():
 
 #Articles
 @app.route('/users')
+@is_logged_in
 def users():
     # Create cursor
     cur = mysql.connection.cursor()
@@ -42,8 +52,13 @@ def users():
 
     users = cur.fetchall()
 
+    #get logged in user
+    result = cur.execute("SELECT * FROM users WHERE username=%s", [session['username']])
+
+    loggedInUser = cur.fetchone()
+
     if result > 0:
-        return render_template('users.html', users=users)
+        return render_template('users.html', users=users, loggedInUser=loggedInUser)
     else:
         msg = 'No Users Found'
         return render_template('users.html', msg=msg)
@@ -145,16 +160,6 @@ def login():
 
     return render_template('login.html')
 
-#check if user logged in
-def is_logged_in(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            flash('Unauthorized, please login', 'danger')
-            return redirect(url_for('login'))
-    return wrap
 #Logout
 @app.route('/logout')
 @is_logged_in
@@ -186,15 +191,16 @@ def add_buck(id):
     # Create cursor
     cur = mysql.connection.cursor()
     result = cur.execute("SELECT * FROM users WHERE id=%s", (id))
-    user = cur.fetchone()
+    gettingUser = cur.fetchone()
     result = cur.execute("SELECT * FROM users WHERE username=%s", [session['username']])
     givingUser = cur.fetchone()
-    if user.get('username') != session['username'] and int(givingUser['bucksToGive']) > 0:
-        # give/take bucks
+
+    # give/take bucks if requirements are met, if not flash message
+    if gettingUser.get('username') != session['username'] and int(givingUser['bucksToGive']) > 0:
         cur.execute("UPDATE users SET bucks = bucks + 1 WHERE id = %s", (id))
         cur.execute("UPDATE users SET bucksToGive = bucksToGive - 1 WHERE username = %s", [session['username']])
     else:
-        if user.get('username') == session['username']:
+        if gettingUser.get('username') == session['username']:
             flash('You cant give yourself bucks you cheater', 'success')
         if int(givingUser['bucksToGive']) <= 0:
             flash(r"You don't have any more bucks to give", 'success')
