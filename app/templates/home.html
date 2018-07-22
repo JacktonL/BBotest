@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="jumbotron" style="background-color: #8b95c9">
+      <div class="container">
+        <h1 class="text-center">Welcome to BBOnline</h1>
+        <img src="static/OT.png" class="img-fluid center-block" style= "width: 20%" alt="There was an error loading this image...">
+        <p class="text-center">Oakland Tech's Isolated Economy</p>
+
+          {% if session.logged_in %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <a href="/logout"  class="btn btn-success btn-lg center-block col-md-4" style="background-color: #444b6e; border:0px solid transparent;">Logout</a>
+        <div class="col-md-4"></div>
+    </div>
+{% else %}
+    <div class="row">
+        <div class="col-md-2"></div>
+            <a href="/login"  class="btn btn-success btn-lg center-block col-md-3" style="background-color: #444b6e; border:0px solid transparent;">Login</a>
+        <div class="col-md-2"></div>
+            <a href="/register" class="btn btn-primary btn-lg center-block col-md-3" style="background-color: #444b6e; border:0px solid transparent;">Register</a>
+        <div class="col-md-2"></div>
+    </div>
+{% endif %}
+
+      </div>
+    </div>
+
+{% endblock %}
+

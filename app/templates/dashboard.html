@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Dashboard <small>Welcome {{session.username}}</small></h1>
+  <hr />
+
+  <table class="table" style="background-color: white; border-radius: 6px">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Your Bucks</th>
+        <th scope="col">Bucks Left to Give</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td scope="row">{{user.bucks|string}}</td>
+        <td>{{user.bucksToGive|string}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table" style="background-color: white; border-radius: 6px">
+    <thead class="thead">
+      <tr>
+        <th scope="col">Log of Bucks You've Received</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for got in bucksYouGot %}
+      <tr>
+        <td scope="row">1 from {{got.name}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <table class="table" style="background-color: white; border-radius: 6px">
+      <thead class="thead">
+        <tr>
+          <th scope="col">Log of Bucks You've Given</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for gave in bucksYouGave %}
+        <tr>
+          <td scope="row">1 to {{gave.name}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
